@@ -19,6 +19,7 @@
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
+ #define PLATFORM_SUPPORT_SINT64_UINT64
 /*
  * CPU register type width
  */
@@ -53,14 +54,14 @@
  * Boolean Values
  */
 #ifndef TRUE
-	#define TRUE        (1u)
+	#define TRUE         (1u)
 #endif
 #ifndef FALSE
-	#define FALSE       (0u)
+	#define FALSE        (0u)
 #endif
 
-#define ENABLE          (1u)
-#define DISABLE         (0u)
+#define ENABLE         (1u)
+#define DISABLE        (0u)
 
 /**********************************************************************************************************************
  *  GLOBAL DATA TYPES AND STRUCTURES
@@ -73,11 +74,13 @@ typedef signed short          sint16;         /*      -32768 .. +32767          
 typedef unsigned short        uint16;         /*           0 .. 65535           */
 typedef signed long           sint32;         /* -2147483648 .. +2147483647     */
 typedef unsigned long         uint32;         /*           0 .. 4294967295      */
-typedef signed long long      sint64;         /* -9223372036854775808 .. 9223372036854775807 */
-typedef unsigned long long    uint64;         /*       0..18446744073709551615  */
 typedef float                 float32;
 typedef double                float64;
 
+#ifdef PLATFORM_SUPPORT_SINT64_UINT64 /*Valid only for gnu and C99 */
+typedef signed long long      sint64;         /* -9223372036854775808 .. 9223372036854775807 */
+typedef unsigned long long    uint64;         /*       0..18446744073709551615  */
+#endif
 
 
 #endif  /* PLATFORM_TYPES_H */

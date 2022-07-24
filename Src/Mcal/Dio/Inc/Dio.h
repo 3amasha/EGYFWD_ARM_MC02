@@ -2,64 +2,74 @@
 
  *  FILE DESCRIPTION
  *  -------------------------------------------------------------------------------------------------------------------
- *         File:  Mcu_Hw.h
- *       Module:  Mcu_Hw
+ *         File:  Dio.h
+ *       Module:  DIO
  *
- *  Description:  header file for Registers definition    
+ *  Description:  Header file for TM4C123GH6PM Microcontroller - Dio Driver     
  *  
  *********************************************************************************************************************/
-#ifndef MCU_HW_H
-#define MCU_HW_H
+#ifndef DIO_H
+#define DIO_H
 
 /**********************************************************************************************************************
  * INCLUDES
  *********************************************************************************************************************/
+#include "Dio_Cfg.h"
+#include "Dio_Types.h"
 #include "Std_Types.h"
-
-/**********************************************************************************************************************
- *  GLOBAL DATA TYPES AND STRUCTURES
- *********************************************************************************************************************/
-typedef struct 
-{
-    uint32 VECACT   :8;
-    uint32          :3;
-    uint32 RETBASE  :1;
-    uint32 VECPEND  :8;
-    uint32          :2;
-    uint32 ISRPEND  :1;
-    uint32 ISRPRE   :1;
-    uint32          :1;
-    uint32 PENDSTCLR:1;
-    uint32 PENDSTSET:1;
-    uint32 UNPENDSV :1;
-    uint32 PENDSV   :1;
-    uint32          :2;
-    uint32 NMISET   :1; 
-}INTCTRL_BF;
-typedef union 
-{
-    uint32 R;
-    INTCTRL_BF B;
-}INTCTRL_Tag;
-
-
+#include "Common_Macros.h"
 
 /**********************************************************************************************************************
  *  GLOBAL CONSTANT MACROS
  *********************************************************************************************************************/
-#define CORTEXM4_PERI_BASE_ADDRESS             0xE000E000
-#define APINT                                  *((volatile uint32*)(CORTEXM4_PERI_BASE_ADDRESS+0xD0C))
-#define INTCTRL                                *((volatile INTCTRL_Tag*)(CORTEXM4_PERI_BASE_ADDRESS+0xD04))
+/*
+ * Macros for Dio Status
+ */
+#define DIO_INITIALIZED                (1U)
+#define DIO_NOT_INITIALIZED            (0U)
 
 /**********************************************************************************************************************
- *  GLOBAL DATA PROTOTYPES
+ *  GLOBAL FUNCTION PROTOTYPES
  *********************************************************************************************************************/
+/* function shall return the value of the specified DIO channel. */
+Dio_LevelType Dio_ReadChannel( 
+	Dio_ChannelType ChannelId 
+);
+/* function shall set the specified Level for the specified channel. */
+void Dio_WriteChannel( 
+ Dio_ChannelType ChannelId, 
+ Dio_LevelType Level 
+);
+/* function shall return the level of all channels of that port.  */
+Dio_PortLevelType Dio_ReadPort( 
+ Dio_PortType PortId 
+);
+/* function shall set the specified value for the specified port.  */
+void Dio_WritePort( 
+ Dio_PortType PortId, 
+ Dio_PortLevelType Level 
+);
+/* function shall initialize all global variables of the DIO module. */
+void Dio_Init( 
+ const Dio_ConfigType* ConfigPtr 
+);
+/* function shall read level of the channel and invert it, then write the inverted level to the channel. */
+Dio_LevelType Dio_FlipChannel( 
+ Dio_ChannelType ChannelId 
+);
+ 
+/**********************************************************************************************************************
+ *  External Variables
+ *********************************************************************************************************************/
+ 
+/* Extern PB structures to be used by Dio and other modules */
+extern const Dio_ConfigType Dio_Configuration;
+
+
 
  
-
- 
-#endif  /* MCU_HW_H */
+#endif  /* DIO_H */
 
 /**********************************************************************************************************************
- *  END OF FILE: Mcu_Hw.h
+ *  END OF FILE: Dio.h
  *********************************************************************************************************************/
